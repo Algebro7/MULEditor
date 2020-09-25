@@ -11,6 +11,8 @@ public class BVDiscrepancy {
     private int sswBV;
     private String type;
     private String url;
+    private String mulIntro;
+    private String sswIntro;
 
     public BVDiscrepancy(MulUnit mulUnit, UnitListData sswUnit) {
         name = mulUnit.getName();
@@ -18,6 +20,8 @@ public class BVDiscrepancy {
         sswBV = sswUnit.getBV();
         type = sswUnit.getType();
         url = mulUnit.getUrl();
+        mulIntro = mulUnit.getIntro();
+        sswIntro = String.valueOf(sswUnit.getYear());
     }
 
     public List<String> getFields() {
@@ -27,6 +31,8 @@ public class BVDiscrepancy {
         fields.add(String.valueOf(sswBV));
         fields.add(String.valueOf(type));
         fields.add(url);
+        fields.add(mulIntro);
+        fields.add(sswIntro);
         return fields;
     }
 }
