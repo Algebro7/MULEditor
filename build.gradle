@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 
-group 'com.ssw'
+group 'com.solarisskunkwerks'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
@@ -11,13 +11,14 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.5.12'
     compile 'org.jsoup:jsoup:1.13.1'
     compile 'info.picocli:picocli:4.5.1'
-    compile fileTree(dir: 'external', include: '*.jar')
+    compile 'com.solarisskunkwerks:sswlib:0.7.5'
 
     implementation 'org.apache.commons:commons-csv:1.8'
 
@@ -28,10 +29,6 @@ dependencies {
 
 application {
     mainClassName = 'MULEditor'
-}
-
-compileJava {
-    options.compilerArgs += ["-Aproject=${project.group}/${project.name}"]
 }
 
 compileJava.finalizedBy('copyArtifact')
