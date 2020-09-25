@@ -29,14 +29,14 @@ public class Client {
         this.httpClient = httpClient;
     }
 
-    public List<SearchResult> searchMUL() throws Exception {
+    public List<MulUnit> searchMUL() throws Exception {
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme(PROTOCOL)
                 .setHost(HOST)
                 .setPath(SEARCH_PATH)
                 .addParameters(getSearchParameters());
         URI uri = uriBuilder.build();
-        List<SearchResult> results;
+        List<MulUnit> results;
         HttpGet request = new HttpGet(uri);
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             HttpEntity entity = response.getEntity();
@@ -61,8 +61,8 @@ public class Client {
         return params;
     }
 
-    private List<SearchResult> parseTables(String html) throws Exception {
-        List<SearchResult> results = new ArrayList<>();
+    private List<MulUnit> parseTables(String html) throws Exception {
+        List<MulUnit> results = new ArrayList<>();
         Document doc = Jsoup.parse(html);
         for (int i = 0; i < 7; i++) {
             Element resultsTable = doc.select("table").get(i);
@@ -73,7 +73,8 @@ public class Client {
                 String BV = node.select("td").get(3).text().replace(",", "");
                 String PV = node.select("td").get(4).text().replace(",", "");
                 String rules = node.select("td").get(6).text();
-                results.add(new SearchResult(name, BV, PV, rules));
+                String relPath = node.select("td").get(0).select("a").first().attr("href");
+                results.add(new MulUnit(name, BV, PV, rules, PROTOCOL + "://" + HOST + relPath));
             }
         }
         return results;

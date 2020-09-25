@@ -16,20 +16,43 @@ repositories {
 dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.5.12'
     compile 'org.jsoup:jsoup:1.13.1'
+    compile 'info.picocli:picocli:4.5.1'
+    compile fileTree(dir: 'external', include: '*.jar')
+
+    implementation 'org.apache.commons:commons-csv:1.8'
+
+    annotationProcessor 'info.picocli:picocli-codegen:4.5.1'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
 application {
-    mainClass = 'MULEditor'
+    mainClassName = 'MULEditor'
+}
+
+compileJava {
+    options.compilerArgs += ["-Aproject=${project.group}/${project.name}"]
+}
+
+compileJava.finalizedBy('copyArtifact')
+
+task copyDeps(dependsOn: build, type: Copy) {
+    from  configurations.runtime
+    from "external"
+    into "$buildDir/output/lib"
+}
+
+task copyArtifact(dependsOn: copyDeps, type: Copy) {
+    from jar
+    into "$buildDir/output"
 }
 
 jar {
     manifest {
         attributes(
-                'Main-Class': 'MULEditor'
+                'Main-Class': 'MULEditor',
+                'Class-Path' : configurations.runtimeClasspath.files
+                        .findAll { it.name.endsWith(".jar") }.collect { "lib/${it.name}" }.join(' '),
         )
     }
-    // bundle all dependencies--they're excluded by default
-    from { (configurations.runtime).collect { it.isDirectory() ? it : zipTree(it) } }
 }
