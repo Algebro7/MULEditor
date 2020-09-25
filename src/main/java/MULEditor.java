@@ -15,8 +15,9 @@ import java.util.concurrent.Callable;
 public class MULEditor implements Callable<Integer> {
 
     @CommandLine.Option(names = { "-o", "--outfile" },
-            description = "Filename to write MUL entries")
-    String outfile = "mul.txt";
+            description = "Filename to write MUL entries (default: ${DEFAULT-VALUE})",
+            defaultValue = "mul.txt")
+    String outfile;
 
     @CommandLine.Option(names = { "-i", "--infile" },
             description = "Path to saved MUL unit file")
@@ -27,8 +28,9 @@ public class MULEditor implements Callable<Integer> {
     String sswMasterPath = "";
 
     @CommandLine.Option(names = { "-b", "--bv-file" },
-            description = "Path to save mismatched BVs")
-    String bvOutfile = "mismatched-bvs.csv";
+            description = "Path to save mismatched BVs (default: ${DEFAULT-VALUE})",
+            defaultValue = "mismatched-bvs.csv")
+    String bvOutfile;
 
     @Override
     public Integer call() {
