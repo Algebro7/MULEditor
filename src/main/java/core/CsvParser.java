@@ -42,7 +42,7 @@ public class CsvParser {
     public static int WriteBVDiscrepancies(List<BVDiscrepancy> discreps, String filename) throws IOException {
         int unitsWritten = 0;
         BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
-        CSVPrinter printer = new CSVPrinter(bw, CSVFormat.DEFAULT.withHeader("Name", "MUL BV", "SSW BV", "Unit Type", "URL"));
+        CSVPrinter printer = new CSVPrinter(bw, CSVFormat.DEFAULT.withHeader("Name", "MUL BV", "SSW BV", "Unit Type", "URL", "Intro Year"));
         for (BVDiscrepancy d : discreps) {
             printer.printRecord(d.getFields());
             unitsWritten++;

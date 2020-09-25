@@ -9,8 +9,9 @@ public class MulUnit {
     private int pv;
     private String rules;
     private String url;
+    private String intro;
 
-    public MulUnit(String name, String BV, String PV, String rules, String URL) {
+    public MulUnit(String name, String BV, String PV, String rules, String URL, String intro) {
         this.name = name;
         try {
             this.bv = Integer.parseInt(BV);
@@ -24,10 +25,11 @@ public class MulUnit {
         }
         this.rules = rules;
         this.url = URL;
+        this.intro = intro;
     }
 
     public MulUnit(List<String> fields) {
-        this(fields.get(0), fields.get(1), fields.get(2), fields.get(3), fields.get(4));
+        this(fields.get(0), fields.get(1), fields.get(2), fields.get(3), fields.get(4), fields.get(5));
     }
 
     public String getName() {
@@ -42,6 +44,8 @@ public class MulUnit {
         return url;
     }
 
+    public String getIntro() { return intro; }
+
     public List<String> getFields() {
         List<String> fields = new ArrayList<>();
         fields.add(name);
@@ -49,11 +53,12 @@ public class MulUnit {
         fields.add(String.valueOf(pv));
         fields.add(rules);
         fields.add(url);
+        fields.add(intro);
         return fields;
     }
 
     @Override
     public String toString() {
-        return name + " " + bv + " " + pv + " " + rules + " " + url;
+        return name + " " + bv + " " + pv + " " + rules + " " + url + " " + intro;
     }
 }

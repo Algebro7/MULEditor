@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Client {
-    private final String HOST = "masterunitlist.info";
-    private final String PROTOCOL = "http";
-    private final String SEARCH_PATH = "/Unit/Filter";
+    private final String MUL_HOST = "masterunitlist.info";
+    private final String MUL_PROTOCOL = "http";
+    private final String MUL_SEARCH_PATH = "/Unit/Filter";
     private CloseableHttpClient httpClient;
 
     public Client() {
@@ -31,23 +31,23 @@ public class Client {
 
     public List<MulUnit> searchMUL() throws Exception {
         URIBuilder uriBuilder = new URIBuilder();
-        uriBuilder.setScheme(PROTOCOL)
-                .setHost(HOST)
-                .setPath(SEARCH_PATH)
-                .addParameters(getSearchParameters());
+        uriBuilder.setScheme(MUL_PROTOCOL)
+                .setHost(MUL_HOST)
+                .setPath(MUL_SEARCH_PATH)
+                .addParameters(getMULSearchParameters());
         URI uri = uriBuilder.build();
         List<MulUnit> results;
         HttpGet request = new HttpGet(uri);
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             HttpEntity entity = response.getEntity();
             String html = EntityUtils.toString(entity);
-            results = parseTables(html);
+            results = parseMULTables(html);
             EntityUtils.consume(entity);
         }
         return results;
     }
 
-    private List<NameValuePair> getSearchParameters() {
+    private List<NameValuePair> getMULSearchParameters() {
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("HasBV", "true"));
         params.add(new BasicNameValuePair("Types", "18"));
@@ -61,7 +61,7 @@ public class Client {
         return params;
     }
 
-    private List<MulUnit> parseTables(String html) throws Exception {
+    private List<MulUnit> parseMULTables(String html) throws Exception {
         List<MulUnit> results = new ArrayList<>();
         Document doc = Jsoup.parse(html);
         for (int i = 0; i < 7; i++) {
@@ -74,7 +74,8 @@ public class Client {
                 String PV = node.select("td").get(4).text().replace(",", "");
                 String rules = node.select("td").get(6).text();
                 String relPath = node.select("td").get(0).select("a").first().attr("href");
-                results.add(new MulUnit(name, BV, PV, rules, PROTOCOL + "://" + HOST + relPath));
+                String intro = node.select("td").get(8).text();
+                results.add(new MulUnit(name, BV, PV, rules, MUL_PROTOCOL + "://" + MUL_HOST + relPath, intro));
             }
         }
         return results;
