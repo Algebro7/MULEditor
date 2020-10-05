@@ -12,6 +12,7 @@ targetCompatibility = 1.8
 repositories {
     mavenCentral()
     mavenLocal()
+    maven { url 'https://jitpack.io' } // SerialKiller from MM
 }
 
 dependencies {
@@ -19,6 +20,7 @@ dependencies {
     compile 'org.jsoup:jsoup:1.13.1'
     compile 'info.picocli:picocli:4.5.1'
     compile 'com.solarisskunkwerks:sswlib:0.7.5'
+    compile 'org.megamek:megamek:0.47.11-SNAPSHOT'
 
     implementation 'org.apache.commons:commons-csv:1.8'
 

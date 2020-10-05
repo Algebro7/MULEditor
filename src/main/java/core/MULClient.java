@@ -13,18 +13,19 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import picocli.CommandLine;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Client {
+public class MULClient {
     private final String MUL_HOST = "masterunitlist.info";
     private final String MUL_PROTOCOL = "http";
     private final String MUL_SEARCH_PATH = "/Unit/Filter";
     private CloseableHttpClient httpClient;
 
-    public Client() {
+    public MULClient() {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         this.httpClient = httpClient;
     }
