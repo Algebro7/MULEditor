@@ -105,19 +105,15 @@ public class Compare implements Callable<Integer> {
             Optional<MulUnit> mulUnit = findMulUnit(sswUnit);
             if (mulUnit.isPresent()) {
                 if (sswUnit.getBV() == mulUnit.get().getBV()) {
-                    System.out.println("Agree with mul");
                     matchingBV++;
                 } else { // Found BV Discrepancy
-                    System.out.println("Found mismatch with MUL");
                     if (useMml) {
                         Optional<MechSummary> mmUnit = findMMUnit(sswUnit);
                         if (mmUnit.isPresent()) { // If there is a matching MM unit found, add it
-                            System.out.println("Found mismatch with MML");
                             discreps.add(new BVDiscrepancy(mulUnit.get(), sswUnit, mmUnit.get()));
                             continue;
                         }
                     }
-                    System.out.println("recording mismatch without MUL");
                     // Otherwise, just use the MUL and SSW (MM BV will be recorded as 0)
                     discreps.add(new BVDiscrepancy(mulUnit.get(), sswUnit));
                 }
